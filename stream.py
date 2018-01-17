@@ -5,7 +5,7 @@ CHUNK = 1024
 WIDTH = 2
 CHANNELS = 2
 RATE = 44100
-RECORD_SECONDS = 5
+RECORD_SECONDS = 10
 
 p = pyaudio.PyAudio()
 
@@ -20,8 +20,10 @@ print("*** RECORDING")
 for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
     data = stream.read(CHUNK)
     stream.write(data, CHUNK)
-    data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
-    print data
+    data = np.fromstring(stream.read(CHUNK), dtype=np.int16)
+    peak = np.average(np.abs(data))*2
+    bars = '*'*int(50*peak/2**16)
+    print("%04d %05d %s") % (i, peak, bars)
 
 print("*** DONE RECORDING")
 
