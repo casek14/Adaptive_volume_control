@@ -6,7 +6,7 @@ case "$1" in start)
     ;;
   stop)
     pactl unload-module `pactl list | grep tcp -B1 | grep M | sed 's/[^0-9]//g'`
-
+    pactl unload-module module-loopback
     ;;
   *)
     echo "Usage: $0 start|stop" >&2
